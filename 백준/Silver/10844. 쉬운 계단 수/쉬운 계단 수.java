@@ -15,26 +15,25 @@ public class Main {
         for (int i=1; i<=9; i++) {
             dp[i][0] = 1L;
         }
+
+        for (int i=1; i<n; i++) {
+            for (int j=0; j<10; j++) {
+                if (j==0) {
+                    dp[j][i] = dp[1][i-1]%mod;
+                }
+                else if (j==9) {
+                    dp[j][i] = dp[8][i-1]%mod;
+                }
+                else {
+                    dp[j][i] = (dp[j-1][i-1] + dp[j+1][i-1])%mod;
+                }
+            }
+        }
+
         long ans = 0;
         for (int i = 0; i < 10; i++) {
-            ans += stair(i, n - 1);
+            ans += dp[i][n-1];
         }
         System.out.println(ans%mod);
-    }
-
-    // 재귀를 통해 계단수를 구하는 메서드. k=직전 자리의 숫자, n=자릿수.
-    static long stair(int k, int n) {
-        if (dp[k][n]==null) {
-            if (k==0) {
-                dp[k][n] = stair(1, n-1);
-            }
-            else if (k==9) {
-                dp[k][n] = stair(8, n-1);
-            }
-            else {
-                dp[k][n] = stair(k-1, n-1) + stair(k+1, n-1);
-            }
-        }
-        return dp[k][n] % mod;
     }
 }
