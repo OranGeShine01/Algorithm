@@ -24,14 +24,10 @@ public class Main {
         if (n>1) {
             dp[2] = input[1] + input[2];
         }
-        System.out.println(wine(n));
+        for (int i=3; i<=n; i++) {
+            dp[i] = Math.max(Math.max(dp[i-3] + input[i-1], dp[i-2]) + input[i], dp[i-1]);
+        }
+        System.out.println(dp[n]);
     }
 
-    //k번째 포도주 중 규칙에 따라 마시는 가장 많은 양을 구하는 메서드.
-    static int wine(int k) {
-        if (dp[k]==null) {
-            dp[k] = Math.max(Math.max(wine(k-2), wine(k-3) + input[k-1]) + input[k], wine(k-1));
-        }
-        return dp[k];
-    }
 }
