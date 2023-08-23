@@ -1,35 +1,31 @@
+import java.util.ArrayList;
+
 class Solution {
     public int[] solution(int[] answers) {
         int[] a = {1, 2, 3, 4, 5};
         int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
         int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-        int as = count(a, answers);
-        int bs = count(b, answers);
-        int cs = count(c, answers);
-        
-        if (as==bs && as==cs) {
-            return new int[]{1, 2, 3};
+        int[] scores = {count(a, answers), count(b, answers), count(c, answers)};
+        int max = 0;
+        for (int i : scores) {
+            max = Math.max(max, i);
         }
-        else if (as==bs && as>cs) {
-            return new int[]{1, 2};
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        int l = scores.length;
+        for (int i=0; i<l; i++) {
+            if (max==scores[i]) {
+                arr.add(i+1);
+            }
         }
-        else if (bs==cs && bs>as) {
-            return new int[]{2, 3};
+
+        int[] answer = new int[arr.size()];
+        for (int i=0; i<answer.length; i++) {
+            answer[i] = arr.get(i);
         }
-        else if (cs==as && as>bs) {
-            return new int[]{1, 3};
-        }
-        else if (as>bs && as>cs) {
-            return new int[]{1};
-        } 
-        else if (bs>as && bs>cs) {
-            return new int[]{2};
-        }
-        else {
-            return new int[]{3};
-        }
+        return answer;
     }
-    
+
     // 정답수를 판별하는 method
     int count(int[] arr,int[] answers) {
         int n = 0;
