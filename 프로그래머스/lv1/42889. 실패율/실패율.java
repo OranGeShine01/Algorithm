@@ -4,25 +4,23 @@ import java.util.Comparator;
 class Solution {
     public int[] solution(int N, int[] stages) {
         int[] answer = new int[N];
-        double[][] rof = new double[N][2];
+        double[][] rof = new double[N][2]; // 스테이지별 실패율
         int l = stages.length;
+        int[] countStages = new int[N+2]; // 스테이지별 인원 카운트
+
+        for (int i : stages) {
+            countStages[i]++;
+        }
+
+        int countChall = l;
         for (int i=0; i<N; i++) {
             rof[i][0] = i+1;
-            int chall = 0; // 해당 스테이지 도전자의 수
-            int fail = 0; // 실패한 도전자의 수
-            for (int j=0; j<l; j++) {
-                if (stages[j]>=rof[i][0]) {
-                    chall++;
-                    if (stages[j]==rof[i][0]) {
-                        fail++;
-                    }
-                }
-            }
-            if (chall==0) {
-                rof[i][1] = 0;    
+            if (countChall==0) {
+                rof[i][1]=0;
             } else {
-                rof[i][1] = (double)fail/(double)chall;    
-            }            
+                rof[i][1] = (double)countStages[i+1]/(double)countChall;
+            }
+            countChall-=countStages[i+1];
         }
 
         // 내림차순 정렬
