@@ -4,21 +4,19 @@ class Solution {
     public int[] solution(int k, int[] score) {
         int l = score.length;
         int[] answer = new int[l];
-        ArrayList<Integer> list = new ArrayList<>();
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
 
         for (int i=0; i<l; i++) {
             if (k>i) {
-                list.add(score[i]);
-                Collections.sort(list);
+                queue.add(score[i]);
             }
             else {
-                if (list.get(0)<score[i]) {
-                    list.remove(0);
-                    list.add(score[i]);
-                    Collections.sort(list);
+                if (queue.peek()<score[i]) {
+                    queue.poll();
+                    queue.add(score[i]);
                 }
             }
-            answer[i] = list.get(0);
+            answer[i] = queue.peek();
         }
         return answer;
     }
