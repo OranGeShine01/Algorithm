@@ -1,5 +1,3 @@
-import jdk.swing.interop.SwingInterOpUtils;
-
 class Solution {
     public int solution(String s) {
         int answer = 0;
