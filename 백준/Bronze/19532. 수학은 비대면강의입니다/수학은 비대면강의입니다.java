@@ -15,16 +15,13 @@
             }
 
             StringBuilder sb = new StringBuilder();
-            for (int i=-999; i<=999; i++) {
-                for (int j=-999; j<=999; j++) {
-                    if (coe[0]*i+coe[1]*j==coe[2] && coe[3]*i+coe[4]*j==coe[5]) {
-                        sb.append(i).append(' ').append(j);
-                        bw.append(sb);
-                        bw.flush();
-                        System.exit(0);
-                    }
-                }
-            }
+            int bdae = coe[1]*coe[3]-coe[0]*coe[4];
+            int x = (coe[1]*coe[5]-coe[2]*coe[4])/bdae;
+            int y = (coe[2]*coe[3]-coe[0]*coe[5])/bdae;
+            sb.append(x).append(' ').append(y);
+            bw.append(sb);
 
+            bw.close();
+            br.close();
         }
     }
