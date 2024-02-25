@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     
     final int maxTime = 1450;
@@ -5,9 +7,7 @@ class Solution {
     final int clean = 10;
     
     public int solution(String[][] book_time) {
-        int answer = 0;
         int time[][] = new int[book_time.length][2];
-        int[] sum = new int[maxTime+1];
         int cnt = 0;
         
         for (int i=0; i<time.length; i++) {
@@ -16,16 +16,23 @@ class Solution {
                 time[i][j] = Integer.parseInt(str[0]) * hour + Integer.parseInt(str[1]);
                 if (j==1) {
                     time[i][j]+=clean;
-                    sum[time[i][j]]-=1;
-                } else sum[time[i][j]]+=1;
+                }
             }
         }
         
-        for (int i : sum) {
-            cnt+=i;
-            answer = Math.max(answer, cnt);
+        Arrays.sort(time, (o1, o2) -> {
+            return o1[0]-o2[0];
+        });
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[1]));
+        
+        for (int[] t : time) {
+            if (!pq.isEmpty() && t[0]>=pq.peek()[1]) {
+                pq.poll();
+            }
+            pq.add(t);
         }
         
-        return answer;
+        return pq.size();
     }
 }
