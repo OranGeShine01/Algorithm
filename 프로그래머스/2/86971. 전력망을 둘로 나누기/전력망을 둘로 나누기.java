@@ -7,6 +7,7 @@ class Solution {
     public int solution(int n, int[][] wires) {
         int answer = n;
         arr = new int[n+1][n+1];
+        boolean[] check = new boolean[n+1];
         
         for (int i=0; i<wires.length; i++) {
             arr[wires[i][0]][wires[i][1]] = 1;
@@ -16,12 +17,16 @@ class Solution {
         for (int i=0; i<wires.length; i++) {
             
             int left = wires[i][0];
+            
+            //if (check[left]) continue;
+            
             int right = wires[i][1];
             
             arr[left][right] = 0;
             arr[right][left] = 0;
             
-            answer = Math.min(answer, bfs(left, n));
+            answer = Math.min(answer, bfs(left, n));                
+            check[left] = true;
             
             arr[left][right] = 1;
             arr[right][left] = 1;
