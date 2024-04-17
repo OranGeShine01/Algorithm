@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    final int limit = 100000;
+    final int limit = 30;
     public int solution(String[] strArr) {
         int answer = 0;
         int[] cnt = new int[limit+1];
