@@ -1,47 +1,65 @@
 import java.util.*;
 
 class Solution {
+    int[][] movings = {{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
+    char[] command = {'d', 'l', 'r', 'u'};
     String answer = null;
-    StringBuilder route;
-    char[] dir = {'d', 'l', 'r', 'u'};
-    int[] rdir = {1, 0, 0, -1};
-    int[] cdir = {0, -1, 1, 0};
-    
-    int endRow, endCol;
-    int arrRow, arrCol; //미로 길이
+    StringBuilder sb;
+
+
+    // global
+    int gr;
+    int gc;
+    int gn;
+    int gm;
+    int gk;
+
     public String solution(int n, int m, int x, int y, int r, int c, int k) {
-        route = new StringBuilder();
-        endRow = r; endCol = c;
-        arrRow = n; arrCol = m;
-        //최단거리 계산 - 거리 k로 갈 수 있는지 여부
-        int length = distance(x, y, r, c);
-        if((k - length) % 2 == 1 || k < length) return "impossible";
-        dfs(x, y, 0, k);
-        
-        return answer == null ? "impossible" : answer;
+
+        gr = r;
+        gc = c;
+        gn = n;
+        gm = m;
+        gk = k;
+
+        sb = new StringBuilder();
+
+        int distance = calculateDistance(x, y);
+        if ((k - distance) % 2 == 1 || k < distance) return "impossible";
+        dfs(x, y, 0);
+
+        return answer;
     }
 
-    private int distance(int x, int y, int r, int c){
-        return (int)Math.abs(x-r) + (int)Math.abs(y-c);
+    private int calculateDistance(int x, int y) {
+        return Math.abs(x - gr) + Math.abs(y - gc);
     }
 
-    private void dfs(int r, int c, int depth, int k){
-        
-        if(answer != null) return;
-        if(depth + distance(r, c, endRow, endCol) > k) return; //현재 깊이 + 남은 거리 > k
-        if(k == depth) {
-            answer = route.toString();
+    private void dfs(int x, int y, int depth) {
+        // 이미 도달한 경로가 있는경우
+        if (answer != null) return;
+        // 현재거리 + 남은거리 > 최종거리인 경우
+        if (depth + calculateDistance(x, y) > gk) return;
+        // 도달시 탐색 중단
+        if (gk == depth) {
+            answer = sb.toString();
             return;
         }
-        for(int i=0; i<4; i++){
-            
-            int nextRow = r + rdir[i];
-            int nextCol = c + cdir[i];
-            if(nextRow <= arrRow && nextCol <= arrCol && nextRow > 0 && nextCol >0){
-                route.append(dir[i]);
-                dfs(nextRow, nextCol, depth+1, k);
-                route.delete(depth, depth+1);
+
+        for ( int i = 0; i < movings.length; i++) {
+
+            int curX = x + movings[i][0];
+            int curY = y + movings[i][1];
+
+            if (isRange(curX, curY)) {
+                sb.append(command[i]);
+                dfs(curX, curY, depth + 1);
+                sb.delete(depth, depth + 1);
             }
         }
+    }
+
+    private boolean isRange(int x, int y) {
+        return (x > 0 && x <= gn && y > 0 && y <= gm);
     }
 }
