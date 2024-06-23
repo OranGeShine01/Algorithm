@@ -20,7 +20,7 @@ class Solution {
         setRotationWeakness();
         
         int[] distCombination = new int[distLen];
-        dfsDist(0, new boolean[distLen], distCombination);
+        dfsDist(0, 0, distCombination);
         return (answer == distLen + 1) ? -1 : answer;
     }
     
@@ -41,19 +41,17 @@ class Solution {
         return result;
     }
     
-    private void dfsDist(int depth, boolean[] isVisited, int[] distCombination) {
+    private void dfsDist(int depth, int isVisited, int[] distCombination) {
         if (depth == distLen) {
             for (int[] rotatedWeakness: rotationWeakness)
             check(distCombination, rotatedWeakness);
             return;
         }
         for (int i = 0; i < distLen; i++) {
-            if (!isVisited[i]) {
-                isVisited[i] = true;
+            if ((isVisited & (1 << i)) == 0) {
                 distCombination[depth] = dist[i];
-                dfsDist(depth + 1, isVisited, distCombination);
+                dfsDist(depth + 1, isVisited | (1 << i), distCombination);
                 distCombination[depth] = 0;
-                isVisited[i] = false;
             }
         }
     }
