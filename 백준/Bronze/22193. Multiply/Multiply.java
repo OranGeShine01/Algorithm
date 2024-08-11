@@ -1,4 +1,6 @@
 import java.io.*;
+import java.math.BigInteger;
+
 public class Main {
     public static void main(String[] args) throws IOException {
 
@@ -6,10 +8,10 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         br.readLine();
-        long n = Long.parseLong(br.readLine());
-        long m = Long.parseLong(br.readLine());
+        BigInteger n = new BigInteger(br.readLine());
+        BigInteger m = new BigInteger(br.readLine());
 
-        bw.append(String.valueOf(n * m));
+        bw.append(String.valueOf(n.multiply(m)));
         bw.close();
     }
 }
