@@ -6,20 +6,20 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        final int R = 31;
-        final int M = 1234567891;
+        final long R = 31;
+        final long M = 1234567891;
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int r = 1;
-        int len = Integer.parseInt(br.readLine());
+        long r = 1;
+        long len = Long.parseLong(br.readLine());
         String str = br.readLine();
-        int hash = 0;
+        long hash = 0;
 
         for (int i = 0; i < len; i++) {
             char ch = str.charAt(i);
-            int a = ch - 'a' + 1;
+            long a = ch - 'a' + 1;
             hash += a * r;
             hash %= M;
             r *= R;
