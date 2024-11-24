@@ -1,45 +1,53 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
-    static int[] input; // 입력값을 받는 배열
-    static Integer[] dp; // 메모이제이션을 할 배열
+    static List<Integer> list;
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
         int n = Integer.parseInt(br.readLine());
-        input = new int[n];
-        dp = new Integer[n];
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] a = new int[n];
+        list = new ArrayList<>();
 
-        for (int i=0; i<n; i++) {
-            input[i] = Integer.parseInt(st.nextToken());
+        String[] inputs = br.readLine().split(" ");
+
+        for (int i = 0; i < n; i++) {
+            a[i] = Integer.parseInt(inputs[i]);
         }
 
-        dp[0] = 1;
-        int max = 1; // 가장 긴 부분수열의 길이
+        list.add(a[0]);
 
-        for (int i=1; i<n; i++) {
-            max = Math.max(max, dp(i));
-        }
-        System.out.println(max);
-    }
-
-    // k번째 항이 포함된 가장 긴 부분수열의 길이를 구하는 메서드.
-    static int dp(int k) {
-        if (dp[k]==null) {
-            dp[k] = 1; // 초기화
-            for (int i=k-1; i>=0; i--) {
-                if (input[i]<input[k]) {
-                    dp[k] = Math.max(dp[k], dp(i)+1);
-                }
+        for (int i = 1; i < n; i++) {
+            int lastIdx = list.size() - 1;
+            if (a[i] > list.get(lastIdx)) list.add(a[i]);
+            else {
+                int replaceIdx = lowerBound(a[i]);
+                list.set(replaceIdx, a[i]);
             }
-
         }
-        return dp[k];
+
+        bw.append(String.valueOf(list.size()));
+
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
+    static int lowerBound(int target) {
+        int start = 0;
+        int end = list.size();
+        while (start < end) {
+            int mid = (start + end) / 2;
+            if (list.get(mid) < target) start = mid + 1;
+            else end = mid;
+        }
+
+        return start;
+    }
 }
