@@ -2,34 +2,36 @@ import java.util.*;
 
 class Solution {
     
-    public int[][] arr;
-    public int[] row = {1, 0, -1, 0};
-    public int[] col = {0, 1, 0, -1};
+    final int[][] movingPatterns = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int[][] minArr;
     
     public int solution(int[][] maps) {
-        arr = new int[maps.length][maps[0].length];
-        arr[0][0] = 1;
-        bfs(maps);
-        return (arr[maps.length-1][maps[0].length-1]==0) ? -1 : arr[maps.length-1][maps[0].length-1];
+        minArr = new int[maps.length][maps[0].length];
+        int lastX = maps.length - 1;
+        int lastY = maps[0].length - 1;
+        bfs(maps);        
+        return (minArr[lastX][lastY] == 0) ? -1 : minArr[lastX][lastY];
     }
     
-    public void bfs(int[][] maps) {
+    public void bfs(int[][] maps) {            
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0,0});
+        minArr[0][0] = 1;
+        int lenX = maps.length;
+        int lenY = maps[0].length;
         
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{0, 0});
-        
-        while (!queue.isEmpty()) {
-            int[] xy = queue.poll();
-            for (int i=0; i<row.length; i++) {
-            int x = xy[0]+row[i];
-            int y = xy[1]+col[i];
-            if (x>=0 && y>=0 && x<arr.length && y<arr[0].length && maps[x][y]==1 && arr[x][y]==0) {
-                arr[x][y] = arr[xy[0]][xy[1]]+1;
-                queue.add(new int[]{x, y});
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int currX = curr[0];
+            int currY = curr[1];
+            for (int[] movingPattern : movingPatterns) {
+                int nextX = currX + movingPattern[0];
+                int nextY = currY + movingPattern[1];
+                if (nextX >= 0 && nextY >= 0 && nextX < lenX && nextY < lenY && minArr[nextX][nextY] == 0 && maps[nextX][nextY] == 1) {
+                    minArr[nextX][nextY] = minArr[currX][currY] + 1;
+                    q.add(new int[]{nextX, nextY});
+                }
             }
-        }    
         }
-        
-        
     }
 }
