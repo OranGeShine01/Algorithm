@@ -1,26 +1,27 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int[] answer = new int[2];
-        int[] sum = new int[sequence.length+1];
-        int gap = Integer.MAX_VALUE;
-        for (int i=1; i<sum.length; i++) {
-            sum[i] = sum[i-1]+sequence[i-1];
-        }
+        int len = sequence.length;
+        int[] answer = new int[]{-1, -1};
+        int sum = 0;
+        int left = 0;
+        int bestLen = len + 1;
         
-        for (int i=0, j=1; i<sum.length; i++) {
-            while (j<sum.length) {
-                int count = sum[j] - sum[i];
-                if (count==k && j-i<gap) {
-                    gap = j-i;
-                    answer[0] = i;
-                    answer[1] = j-1;
-                } else if (count<k) {
-                    j++;
-                    continue;
-                }
-                break;
+        for (int right = 0; right < len; right++) {
+            sum += sequence[right];
+            
+            while (sum > k) {
+                sum -= sequence[left];
+                left++;
             }
-        }
+            
+            if (sum == k && right - left + 1 < bestLen) {
+                bestLen = right - left + 1;
+                answer[0] = left;
+                answer[1] = right;
+            }
+        }     
         
         return answer;
     }
