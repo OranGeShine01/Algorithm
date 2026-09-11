@@ -2,11 +2,12 @@ import java.util.*;
 
 class Solution {
     
-    int answer = 0;
+    int answer;
     int len = 0;
     boolean[] visited;
     
     public int solution(int k, int[][] dungeons) {
+        answer = 0;
         len = dungeons.length;
         visited = new boolean[len];
         dfs(k, dungeons, 0);
